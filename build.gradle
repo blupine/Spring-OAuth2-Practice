@@ -1,3 +1,9 @@
+buildscript {
+	dependencies {
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.9.2'
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.4.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -8,6 +14,27 @@ plugins {
 group = 'com.bbolab'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+
+asciidoctor {
+	doLast {
+		copy {
+			from file("build/asciidoc/html5")
+			//src/docs/asciidoc 경로의 index.adoc 파일을 읽어서 생성된 index.html 파일 경로
+			into file("src/main/resources/static/docs")
+			//src/main/resources/static/docs에 위 index.html 파일을 복사한다.
+		}
+	}
+	sourceDir = file('src/docs/asciidoc') // default path
+	sources {
+		include 'index.adoc'
+	}
+	//위의 경로에 있는 index.adoc을 읽는다.
+	options doctype: 'book', backend: 'html'
+}
+build {
+	dependsOn asciidoctor
+}
 
 configurations {
 	compileOnly {
@@ -40,15 +67,11 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:2.3.6'
 	runtimeOnly 'com.h2database:h2'
 
-
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.3.RELEASE'
+	testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.3.RELEASE'
 }
 
 test {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
-}
-
-asciidoctor {
-	inputs.dir snippetsDir
-	dependsOn test
 }
