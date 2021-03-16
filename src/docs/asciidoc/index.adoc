@@ -87,3 +87,10 @@ include::{snippets}/errors/http-response.adoc[]
 `Post` 요청을 사용하여 회원 가입을 요청할 수 있다.
 
 operation::signup[snippets='http-request,http-response,request-fields,response-fields,links']
+
+[[login]]
+== Login
+
+`Post` 요청을 사용하여 로그인을 요청할 수 있다.
+
+operation::login[snippets='http-request,http-response,request-fields,response-fields,links']

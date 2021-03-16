@@ -1,8 +1,7 @@
 package com.bbolab.godingeta.account.controller;
 
 import com.bbolab.godingeta.account.domain.Account;
-import com.bbolab.godingeta.account.dto.SignupRequestDto;
-import com.bbolab.godingeta.account.dto.SignupResultDto;
+import com.bbolab.godingeta.account.dto.*;
 import com.bbolab.godingeta.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -45,6 +45,26 @@ public class AccountController {
         return ResponseEntity.ok(entityModel);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody @Valid LoginRequestDto loginRequestDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            // TODO : bindingResult 확인해보기
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
+        Optional<LoginResultDto> optional = accountService.login(loginRequestDto);
+
+        if(optional.isPresent()) {
+            EntityModel<LoginResultDto> entityModel = EntityModel.of(optional.get());
+            entityModel.add(WebMvcLinkBuilder.linkTo(AccountController.class).slash("login").withSelfRel());
+            entityModel.add(Link.of("/docs/index.html#login").withRel("profile"));
+            return ResponseEntity.ok(entityModel);
+        }
+        else {
+            return ResponseEntity.badRequest().body("Invalid user information");
+        }
+    }
 
     private static URI createUriWithResource(String resource) {
         WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(AccountController.class).slash(resource);

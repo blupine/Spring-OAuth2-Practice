@@ -1,12 +1,12 @@
 package com.bbolab.godingeta.account.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor(staticName = "of")
-public class LoginRequestDto {
+@RequiredArgsConstructor(staticName = "of")
+public class LoginResultDto {
     private String username;
-    private String password;
+    private String email;
+    private String jwtToken;
 }
