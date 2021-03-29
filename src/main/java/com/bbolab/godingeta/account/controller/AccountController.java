@@ -1,5 +1,6 @@
 package com.bbolab.godingeta.account.controller;
 
+import com.bbolab.godingeta.account.authentication.CurrentUser;
 import com.bbolab.godingeta.account.domain.Account;
 import com.bbolab.godingeta.account.dto.*;
 import com.bbolab.godingeta.account.service.AccountService;
@@ -8,12 +9,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -65,6 +64,7 @@ public class AccountController {
             return ResponseEntity.badRequest().body("Invalid user information");
         }
     }
+
 
     private static URI createUriWithResource(String resource) {
         WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(AccountController.class).slash(resource);
