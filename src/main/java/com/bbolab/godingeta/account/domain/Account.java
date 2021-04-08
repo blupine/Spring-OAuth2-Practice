@@ -17,12 +17,35 @@ public class Account {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(unique = true)
+    @Column
     private String username;
+
+    @Column
+    private String nickname;
 
     @Column(unique = true)
     private String email;
 
-    private String password;
+    @Column
+    private String sns_id;
+
+    @Column
+    private String sns_type;
+
+    @Column
+    private String oauthId;
+
+    @Column
+    private String providerName;
+
+    @Column
+    private String accessToken;
+
+    public Account(String oauthId, String name, String providerName, String accessToken) {
+        this.oauthId = oauthId;
+        this.username = name;
+        this.providerName = providerName;
+        this.accessToken = accessToken;
+    }
 
 }
