@@ -4,8 +4,24 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
-public enum CustomOAuthProvider {
+import java.util.Arrays;
+import java.util.List;
 
+public enum CustomOAuthProvider {
+    NAVER {
+        @Override
+        public ClientRegistration.Builder getBuilder() {
+            return getBuilder("naver", ClientAuthenticationMethod.POST)
+                    .scope("profile")
+                    .authorizationUri("https://nid.naver.com/oauth2.0/authorize")
+                    .tokenUri("https://nid.naver.com/oauth2.0/token")
+                    .userInfoUri("https://openapi.naver.com/v1/nid/me")
+                    .clientId("ZXmx2ue7CuTgJw52MFUh")
+                    .clientSecret("SZ6kf3SBKy")
+                    .userNameAttributeName("response")
+                    .clientName("Naver");
+        }
+    },
     KAKAO {
 
         @Override
@@ -23,6 +39,7 @@ public enum CustomOAuthProvider {
 
     };
 
+
     private static final String DEFAULT_LOGIN_REDIRECT_URL = "{baseUrl}/login/oauth2/code/{registrationId}";
 
     protected final ClientRegistration.Builder getBuilder(String registrationId,
@@ -35,4 +52,6 @@ public enum CustomOAuthProvider {
     }
 
     public abstract ClientRegistration.Builder getBuilder();
+
+    public static final List<CustomOAuthProvider> oAuthProviders = Arrays.asList(NAVER, KAKAO);
 }

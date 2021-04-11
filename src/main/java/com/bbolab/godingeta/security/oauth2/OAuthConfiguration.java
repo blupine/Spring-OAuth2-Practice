@@ -8,17 +8,16 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 public class OAuthConfiguration {
+
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        final ClientRegistration clientRegistration = CustomOAuthProvider.KAKAO
-                .getBuilder()
-                .build();
-
-        return new InMemoryClientRegistrationRepository(Collections.singletonList(
-                clientRegistration
-        ));
+        List<ClientRegistration> providers = CustomOAuthProvider.oAuthProviders.stream()
+                .map(c -> c.getBuilder().build()).collect(Collectors.toList());
+        return new InMemoryClientRegistrationRepository(providers);
     }
 }
