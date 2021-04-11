@@ -23,6 +23,9 @@ public class Account {
     @Column
     private String nickname;
 
+    @Column
+    private String password;
+
     @Column(unique = true)
     private String email;
 
@@ -41,6 +44,16 @@ public class Account {
     @Column
     private String accessToken;
 
+    @Column
+    private String picture;
+
+    private Account(String name, String email, String picture){
+        this.username = name;
+        this.email = email;
+        this.picture = picture;
+    }
+
+    // TODO : Use Factory pattern
     public Account(String oauthId, String name, String providerName, String accessToken) {
         this.oauthId = oauthId;
         this.username = name;
@@ -48,4 +61,13 @@ public class Account {
         this.accessToken = accessToken;
     }
 
+    public static Account of(String name, String email, String picture) {
+        return new Account(name, email, picture);
+    }
+
+    public Account update(String name, String picture) {
+        this.username = name;
+        this.picture = picture;
+        return this;
+    }
 }
