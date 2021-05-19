@@ -17,12 +17,57 @@ public class Account {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(unique = true)
+    @Column
     private String username;
+
+    @Column
+    private String nickname;
+
+    @Column
+    private String password;
 
     @Column(unique = true)
     private String email;
 
-    private String password;
+    @Column
+    private String sns_id;
 
+    @Column
+    private String sns_type;
+
+    @Column
+    private String oauthId;
+
+    @Column
+    private String providerName;
+
+    @Column
+    private String accessToken;
+
+    @Column
+    private String picture;
+
+    private Account(String name, String email, String picture){
+        this.username = name;
+        this.email = email;
+        this.picture = picture;
+    }
+
+    // TODO : Use Factory pattern
+    public Account(String oauthId, String name, String providerName, String accessToken) {
+        this.oauthId = oauthId;
+        this.username = name;
+        this.providerName = providerName;
+        this.accessToken = accessToken;
+    }
+
+    public static Account of(String name, String email, String picture) {
+        return new Account(name, email, picture);
+    }
+
+    public Account update(String name, String picture) {
+        this.username = name;
+        this.picture = picture;
+        return this;
+    }
 }
